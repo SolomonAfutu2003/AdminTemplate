@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Btn = ({text,icon,style,onClick}) => {
+const Btn = ({text,icon,style,onClick,onMouseEnter}) => {
   return (
     <div>
-        <button className={style} onClick={onClick}>
+        <button className={style} onClick={onClick} onMouseEnter={onMouseEnter}>
             {icon}
             {text}
         </button>

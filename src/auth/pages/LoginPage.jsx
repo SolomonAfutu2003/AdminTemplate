@@ -10,16 +10,29 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const fakeUser = { id: 1, name: "John Doe", email: "admin@test" };
+    setError(""); // clear any previous error
+
+    const fakeAdmin = { id: 1, name: "John Doe", email: "admin@test" };
+    const fakeUser = { id: 2, name: "Jane Smith", email: "user@test" };
+
+    if (!email.trim()) {
+      setError("❌ Input your email");
+      return;
+    }
+
+    if (email === fakeAdmin.email) {
+      login(fakeAdmin);
+      navigate("/");
+      return;
+    }
 
     if (email === fakeUser.email) {
       login(fakeUser);
-      navigate("/");
-    } else if (!email.trim()) {
-      setError("❌ input your email");
-    } else {
-      setError("❌ Try again, invalid email");
+      navigate("/home");
+      return;
     }
+
+    setError("❌ Try again, invalid email");
   };
 
   return (
@@ -35,7 +48,7 @@ const Login = () => {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-500":""}`}
+          className={`border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-500" : ""}`}
           required
         />
 

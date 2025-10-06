@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import profile from "../assets/Image1.jpg"
-import BlogCards from '../components/BlogCards'
-import Btn from '../components/Btn'
+import profile from "../../assets/Image1.jpg"
+import BlogCards from '../../components/BlogCards'
+import Btn from '../../components/Btn'
 
 const BlogPosts = () => {
   const PostData = [

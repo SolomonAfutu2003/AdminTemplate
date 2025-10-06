@@ -7,6 +7,7 @@ import Footer from '../components/Footer'
 
 
 const AdminLayout = () => {
+
     return (
         <div className='flex'>
             <SideNav />

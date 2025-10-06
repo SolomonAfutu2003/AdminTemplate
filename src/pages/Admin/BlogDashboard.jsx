@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,9 +11,12 @@ import {
     ArcElement
 } from "chart.js";
 import { Line, Pie } from "react-chartjs-2";
-import LinkBtn from '../components/LinkBtn';
+import LinkBtn from '../../components/LinkBtn';
 import { Check, EllipsisVertical, MoveRight, XIcon } from 'lucide-react';
-import profile from "../assets/Image1.jpg"
+import profile from "../../assets/Image1.jpg"
+import Header from '../../components/sections/Header';
+import Stats from '../../components/sections/Stats';
+
 
 // Register Chart.js components
 ChartJS.register(
@@ -117,41 +120,36 @@ const BlogDashboard = () => {
         }
     ]
 
+    const [header, setHeader] = useState({
+        heading: "Dashboard",
+        subheading: "Blog Overview",
+    });
+
+    const [stats, setStats] = useState({
+        dataTitle: "Posts",
+        dataCount: 2000,
+        dataPercent: 4.50,
+    });
+
+    // useEffect(() => {
+    //     const saved = localStorage.getItem("headerSection");
+    //     if (saved) {
+    //         setHeader(JSON.parse(saved));
+    //     }
+    // }, []);
+
+    useEffect(() => {
+        const saved = localStorage.getItem("statsSection");
+        if (saved) {
+            setStats(JSON.parse(saved));
+        }
+    }, []);
+
     return (
         <div className='space-y-5'>
-            <header>
-                <h3 className='text-gray-400'>Dashboard</h3>
-                <h2 className='text-3xl text-gray-600'>Blog Overview</h2>
-            </header>
+            <Header heading={header.heading} subheading={header.subheading} />
             <main className='space-y-5'>
-                <section className='grid grid-cols-5 gap-5'>
-                    <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                        <h3 className='text-2xl'>Post</h3>
-                        <p className='text-4xl'>2,300</p>
-                        <span>4.47%</span>
-                    </div>
-                    <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                        <h3 className='text-2xl'>Post</h3>
-                        <p className='text-4xl'>2,300</p>
-                        <span>4.47%</span>
-                    </div>
-                    <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                        <h3 className='text-2xl'>Post</h3>
-                        <p className='text-4xl'>2,300</p>
-                        <span>4.47%</span>
-                    </div>
-                    <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                        <h3 className='text-2xl'>Post</h3>
-                        <p className='text-4xl'>2,300</p>
-                        <span>4.47%</span>
-                    </div>
-                    <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                        <h3 className='text-2xl'>Post</h3>
-                        <p className='text-4xl'>2,300</p>
-                        <span>4.47%</span>
-                    </div>
-                </section>
-
+                <Stats dataTitle={stats.dataTitle} dataCount={stats.dataCount} dataPercent={stats.dataPercent} />
                 <section className='w-full flex gap-5'>
                     <div className='bg-white rounded-lg shadow-[#00000038] shadow-lg w-[70%]'>
                         <div className='border-b border-b-gray-300 py-4 px-2'>
@@ -237,7 +235,7 @@ const BlogDashboard = () => {
                             ))}
                         </div>
                         <div className='flex justify-end p-3'>
-                        <LinkBtn text={"Full report"} icon={<MoveRight size={15} />} className={"flex items-center gap-3 py-2 px-4 text-xs rounded-lg"} />
+                            <LinkBtn text={"Full report"} icon={<MoveRight size={15} />} className={"flex items-center gap-3 py-2 px-4 text-xs rounded-lg"} />
                         </div>
                     </div>
                 </section>

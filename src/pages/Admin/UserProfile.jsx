@@ -1,9 +1,25 @@
-import React from 'react'
-import Btn from '../components/Btn'
-import profile from "../assets/Image1.jpg"
+import React, { useState } from 'react'
+import Btn from '../../components/Btn'
+import profile from "../../assets/Image1.jpg"
 import { UserPlus } from 'lucide-react'
 
 const UserProfile = () => {
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    password: "",
+    email: "",
+  })
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  console.log(form)
+
   return (
     <div className='space-y-5'>
       <header>
@@ -49,21 +65,21 @@ const UserProfile = () => {
               <div className='flex justify-between gap-3 w-full'>
                 <div className='flex flex-col gap-2 w-full'>
                   <label htmlFor="" className='text-gray-500 text-base'>First Name</label>
-                  <input type="text" name="" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
+                  <input type="text" onChange={handleChange} name="firstName" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
                 </div>
                 <div className='flex flex-col gap-2 w-full'>
                   <label htmlFor="" className='text-gray-500 text-base'>Last Name</label>
-                  <input type="text" name="" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
+                  <input type="text" onChange={handleChange} name="lastName" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
                 </div>
               </div>
               <div className='flex justify-between gap-3 w-full'>
                 <div className='flex flex-col gap-2 w-full'>
                   <label htmlFor="" className='text-gray-500 text-base'>Email</label>
-                  <input type="email" name="" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
+                  <input type="email" onChange={handleChange} name="email" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
                 </div>
                 <div className='flex flex-col gap-2 w-full'>
                   <label htmlFor="" className='text-gray-500 text-base'>Password</label>
-                  <input type="password" name="" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
+                  <input type="password" onChange={handleChange} name="password" id="" className='w-full border border-gray-200 transition duration-200 delay-100 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100 hover:border-gray-400 rounded-md py-2 px-3' placeholder='Write' />
                 </div>
               </div>
             </section>

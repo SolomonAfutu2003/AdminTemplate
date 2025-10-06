@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "type": "header",
+        "title": "My CMS"
+    },
+    {
+        "id": 2,
+        "type": "hero",
+        "heading": "Welcome!",
+        "subtext": "Edit me below",
+        "button": "Click"
+    },
+    {
+        "id": 3,
+        "type": "tabs",
+        "tabs": [
+            "One",
+            "Two",
+            "Three"
+        ]
+    },
+    {
+        "id": 4,
+        "type": "footer",
+        "text": "© 2025 My Site"
+    }
+]
