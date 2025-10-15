@@ -1,22 +1,16 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import ClientFoot from '../components/ClientFoot'
 
 
 const ClientLayout = () => {
-  // const [visibility, setVisibility] = useState({});
-
-  // useEffect(() => {
-  //   const saved = localStorage.getItem("cmsVisibility");
-  //   if (saved) {
-  //     setVisibility(JSON.parse(saved));
-  //   }
-  // }, []);
 
   return (
     <div >
       <Navbar />
       <Outlet />
+      <ClientFoot />
     </div>
   )
 }

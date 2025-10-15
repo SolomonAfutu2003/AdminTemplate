@@ -1,4 +1,5 @@
 // editors/NavEditor.jsx
+import { Trash } from "lucide-react";
 import React, { useState, useEffect } from "react";
 // import { iconMap } from "../utils/iconMap";
 
@@ -47,7 +48,8 @@ const NavEditor = () => {
             <h2 className="text-xl font-bold">Edit Navigation</h2>
 
             {links.map((link, i) => (
-                <div key={i} className="space-y-2 border p-2 rounded relative">
+                <div key={i} className="space-y-2 p-2 rounded relative">
+                    <label htmlFor="">Link Text </label>
                     <input
                         type="text"
                         value={link.text}
@@ -55,6 +57,9 @@ const NavEditor = () => {
                         className="border p-2 w-full rounded"
                         placeholder="Link Text"
                     />
+
+
+                    <label htmlFor=""> Route Path</label>
                     <input
                         type="text"
                         value={link.to}
@@ -62,19 +67,14 @@ const NavEditor = () => {
                         className="border p-2 w-full rounded"
                         placeholder="Route Path"
                     />
-                    {/* <select
-            value={link.icon}
-            onChange={(e) => updateLink(i, "icon", e.target.value)}
-            className="border p-2 w-full rounded"
-          >
-          </select> */}
+
 
                     {/* Remove button */}
                     <button
                         onClick={() => removeLink(i)}
                         className="absolute top-2 right-2 text-red-500"
                     >
-                        ✕
+                        <Trash />
                     </button>
                 </div>
             ))}

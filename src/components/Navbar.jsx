@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Btn from "./Btn";
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import Logo from "./sections/Logo";
 
 const Navbar = () => {
     const [links, setLinks] = useState([]);
@@ -51,50 +52,67 @@ const Navbar = () => {
         const saved = localStorage.getItem("cmsVisibility");
         if (saved) {
             setVisibility(JSON.parse(saved));
+        } else {
+            // Default: all visible
+            setVisibility({
+                header: true,
+                navbar: true,
+                footer: true,
+                button: true,
+                blog: true,
+                latest: true,
+                trending: true,
+                national: true,
+            });
         }
     }, []);
 
-    const handleMenu = () => {
-        setIsActive((prev) => !prev)
-    }
+    const [image, setImage] = useState("");
+
+    useEffect(() => {
+      const saved = localStorage.getItem("logoSection");
+      if (saved) {
+        const { image } = JSON.parse(saved);
+        setImage(image || "");
+      }
+    }, []);
+
+    const tabs = [
+        { id: "latest", label: "Latest" },
+        { id: "trending", label: "Trending" },
+        { id: "national", label: "National" },
+    ];
+
 
     return (
         <div className="sticky top-0 bg-white flex flex-col shadow-lg">
-            {visibility.navbar !== false && <Navbar />}
-            <section className="min-h-20 px-10 flex justify-between items-center relative">
+            <section className="min-h-20 py-3 px-10 flex justify-between items-center relative">
                 <div>
-                    <h2>Logo</h2>
+                    <Logo image={image} />
                 </div>
-                {visibility.navbar !== false && (
-                    <div className="relative">
-                        {/* Top Navigation Buttons */}
+                {visibility.navbar && (
+                    <div>
                         <div className="flex gap-3">
-                            <Btn
-                                text={"Latest"}
-                                onClick={handleMenu}
-                                icon={isActive ? <ChevronUp /> : <ChevronDown />}
-                                style={
-                                    "flex font-bold text-2xl flex-row-reverse items-center gap-2"
-                                }
-                            />
-                            <Btn
-                                text={"Trending"}
-                                icon={<ChevronDown />}
-                                style={
-                                    "flex font-bold text-2xl flex-row-reverse items-center gap-2"
-                                }
-                            />
-                            <Btn
-                                text={"National"}
-                                icon={<ChevronDown />}
-                                style={
-                                    "flex font-bold text-2xl flex-row-reverse items-center gap-2"
-                                }
-                            />
+                            {tabs
+                                .filter((tab) => visibility[tab.id] !== false) // 👈 Only show visible ones
+                                .map((tab) => (
+                                    <Btn
+                                        key={tab.id}
+                                        text={tab.label}
+                                        onClick={() =>
+                                            setIsActive((prev) => (prev === tab.id ? null : tab.id))
+                                        }
+                                        icon={
+                                            isActive === tab.id ? <ChevronUp /> : <ChevronDown />
+                                        }
+                                        style="flex font-bold text-2xl flex-row-reverse items-center gap-2"
+                                    />
+                                ))}
                         </div>
 
+
                         {isActive && (
-                            <section className="bg-white w-[90%] absolute -bottom-32 left-20 right-20 p-6 flex gap-3 shadow-lg rounded-lg">
+                            <section className="bg-white absolute -bottom-65 left-20 right-20 p-6 flex gap-3 shadow-lg rounded-lg">
                                 <div className="bg-gray-100 w-[20%] rounded-md p-3">
                                     <ul className="flex flex-col items-start gap-2">
                                         {PostData.map((post, idx) => (
@@ -125,7 +143,7 @@ const Navbar = () => {
 
                 <div className="flex items-center gap-5">
                     <Search />
-                    <Btn text={"Subscribe"} style={"bg-red-500 rounded-lg px-4 py-2 text-white"} />
+                    {visibility.button && (<Btn text={"Subscribe"} style={"bg-red-500 rounded-lg px-4 py-2 text-white"} />)}
                 </div>
             </section>
             <section className="bg-red-500">

@@ -14,7 +14,7 @@ import { Line, Pie } from "react-chartjs-2";
 import LinkBtn from '../../components/LinkBtn';
 import { Check, EllipsisVertical, MoveRight, XIcon } from 'lucide-react';
 import profile from "../../assets/Image1.jpg"
-import Header from '../../components/sections/Header';
+import Header from '../../components/sections/Post';
 import Stats from '../../components/sections/Stats';
 
 
@@ -147,7 +147,10 @@ const BlogDashboard = () => {
 
     return (
         <div className='space-y-5'>
-            <Header heading={header.heading} subheading={header.subheading} />
+            <header>
+                <h3 className='text-gray-400'>{header.heading}</h3>
+                <h4 className='text-3xl text-gray-700 font-bold'>{header.subheading}</h4>
+            </header>
             <main className='space-y-5'>
                 <Stats dataTitle={stats.dataTitle} dataCount={stats.dataCount} dataPercent={stats.dataPercent} />
                 <section className='w-full flex gap-5'>

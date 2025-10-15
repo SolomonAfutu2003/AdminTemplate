@@ -4,27 +4,54 @@ const sections = [
   { id: "header", label: "Header" },
   { id: "navbar", label: "Navbar" },
   { id: "footer", label: "Footer" },
-  { id: "stats", label: "Stats Section" },
+  { id: "button", label: "Button" },
   { id: "blog", label: "Blog Section" },
+  { id: "latest", label: "Latest" },
+  { id: "trending", label: "Trending" },
+  { id: "national", label: "National" },
 ];
 
 const VisibilityEditor = () => {
   const [visibility, setVisibility] = useState({});
 
   // Load visibility from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("cmsVisibility");
-    if (saved) {
-      setVisibility(JSON.parse(saved));
-    } else {
-      // Default: all visible
+useEffect(() => {
+  const saved = localStorage.getItem("cmsVisibility");
+
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+
+      // If it's empty or invalid, reset to all visible
+      const hasKeys = Object.keys(parsed).length > 0;
+
+      if (hasKeys) {
+        // Merge saved data with any new sections
+        const merged = sections.reduce((acc, sec) => {
+          acc[sec.id] = parsed[sec.id] ?? true; // default to visible
+          return acc;
+        }, {});
+        setVisibility(merged);
+      } else {
+        throw new Error("Empty data");
+      }
+    } catch {
       const initialState = sections.reduce((acc, sec) => {
         acc[sec.id] = true;
         return acc;
       }, {});
       setVisibility(initialState);
     }
-  }, []);
+  } else {
+    // Default: all visible
+    const initialState = sections.reduce((acc, sec) => {
+      acc[sec.id] = true;
+      return acc;
+    }, {});
+    setVisibility(initialState);
+  }
+}, []);
+
 
   // Save whenever visibility changes
   useEffect(() => {

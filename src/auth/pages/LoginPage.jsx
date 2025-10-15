@@ -1,3 +1,4 @@
+// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -11,29 +12,30 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     setError(""); // clear any previous error
-
+  
     const fakeAdmin = { id: 1, name: "John Doe", email: "admin@test" };
     const fakeUser = { id: 2, name: "Jane Smith", email: "user@test" };
-
+  
     if (!email.trim()) {
       setError("❌ Input your email");
       return;
     }
-
+  
     if (email === fakeAdmin.email) {
       login(fakeAdmin);
       navigate("/");
       return;
     }
-
+  
     if (email === fakeUser.email) {
       login(fakeUser);
       navigate("/home");
       return;
     }
-
+  
     setError("❌ Try again, invalid email");
   };
+  
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
