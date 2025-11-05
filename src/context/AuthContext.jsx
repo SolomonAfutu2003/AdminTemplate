@@ -1,22 +1,43 @@
-// src/context/AuthContext.jsx 
-import React, { createContext, useContext, useState, useEffect } from "react";
-const AuthContext = createContext();
-// Provider
+// src/context/AuthContext.jsx
+import React, { createContext, useState, useEffect } from "react";
+import { TOKEN_KEY, USER_KEY } from "../constant";
+
+export const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); const [loading, setLoading] = useState(true); // Load from localStorage on first render 
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem(USER_KEY)) || null
+  );
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) { setUser(JSON.parse(storedUser)); } setLoading(false)
+    // ✅ Restore user from localStorage (no /auth/me call needed)
+    const savedUser = localStorage.getItem(USER_KEY);
+    const savedToken = localStorage.getItem(TOKEN_KEY);
+
+    if (savedUser && savedToken) {
+      setUser(JSON.parse(savedUser));
+    }
+    setLoading(false); // ensure loading finishes
   }, []);
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+
+  // ✅ Login — store token and user info
+  const login = ({user, token}) => {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    setUser(user);
   };
+
+  // ✅ Logout — clear session
   const logout = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
     setUser(null);
-    localStorage.removeItem("user");
   };
-  return (<AuthContext.Provider value={{ user, login, logout, loading }}>
-    {children} </AuthContext.Provider>);
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-export const useAuth = () => useContext(AuthContext);

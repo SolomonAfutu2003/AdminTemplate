@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Switch from "../components/Switch";
 
 const sections = [
   { id: "header", label: "Header" },
@@ -15,42 +16,42 @@ const VisibilityEditor = () => {
   const [visibility, setVisibility] = useState({});
 
   // Load visibility from localStorage
-useEffect(() => {
-  const saved = localStorage.getItem("cmsVisibility");
+  useEffect(() => {
+    const saved = localStorage.getItem("cmsVisibility");
 
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
 
-      // If it's empty or invalid, reset to all visible
-      const hasKeys = Object.keys(parsed).length > 0;
+        // If it's empty or invalid, reset to all visible
+        const hasKeys = Object.keys(parsed).length > 0;
 
-      if (hasKeys) {
-        // Merge saved data with any new sections
-        const merged = sections.reduce((acc, sec) => {
-          acc[sec.id] = parsed[sec.id] ?? true; // default to visible
+        if (hasKeys) {
+          // Merge saved data with any new sections
+          const merged = sections.reduce((acc, sec) => {
+            acc[sec.id] = parsed[sec.id] ?? true; // default to visible
+            return acc;
+          }, {});
+          setVisibility(merged);
+        } else {
+          throw new Error("Empty data");
+        }
+      } catch {
+        const initialState = sections.reduce((acc, sec) => {
+          acc[sec.id] = true;
           return acc;
         }, {});
-        setVisibility(merged);
-      } else {
-        throw new Error("Empty data");
+        setVisibility(initialState);
       }
-    } catch {
+    } else {
+      // Default: all visible
       const initialState = sections.reduce((acc, sec) => {
         acc[sec.id] = true;
         return acc;
       }, {});
       setVisibility(initialState);
     }
-  } else {
-    // Default: all visible
-    const initialState = sections.reduce((acc, sec) => {
-      acc[sec.id] = true;
-      return acc;
-    }, {});
-    setVisibility(initialState);
-  }
-}, []);
+  }, []);
 
 
   // Save whenever visibility changes
@@ -67,23 +68,22 @@ useEffect(() => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 w-[400px] space-y-3">
-      <h2 className="text-lg font-semibold mb-2">🔧 Section Visibility</h2>
-      {sections.map((sec) => (
-        <div key={sec.id} className="flex justify-between items-center border-b py-2">
-          <span>{sec.label}</span>
-          <button
-            onClick={() => toggleVisibility(sec.id)}
-            className={`px-3 py-1 rounded ${
-              visibility[sec.id]
-                ? "bg-green-500 text-white"
-                : "bg-gray-300 text-gray-700"
-            }`}
-          >
-            {visibility[sec.id] ? "Visible" : "Hidden"}
-          </button>
-        </div>
-      ))}
+    <div className="p-4 space-y-6">
+     <div> <h2 className="text-4xl font-bold mb-2">🔧 Section Visibility</h2></div>
+      <div className="grid grid-cols-3 gap-4">
+        {sections.map((sec) => (
+          <div key={sec.id} className="bg-white flex justify-between items-center py-6 px-4 rounded-lg">
+            <span className="text-2xl font-bold">{sec.label}</span>
+            <Switch
+              checked={visibility[sec.id]}
+              onChange={() => toggleVisibility(sec.id)}
+            />
+            <span className={`ml-2 text-base font-medium ${visibility[sec.id] ? "text-green-500" : "text-red-500"}`}>
+              {visibility[sec.id] ? "Visible" : "Hidden"}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

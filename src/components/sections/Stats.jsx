@@ -1,36 +1,16 @@
 import React from 'react'
+import LinkBtn from '../LinkBtn'
 
-const Stats = ({dataTitle,dataCount,dataPercent}) => {
+const Stats = ({ dataTitle, dataCount, style, loader,icon,text,linkStyle }) => {
     return (
-        <div>
-            <section className='grid grid-cols-5 gap-5'>
-                <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                    <h3 className='text-2xl'>{dataTitle}</h3>
-                    <p className='text-4xl'>{dataCount}</p>
-                    <span>{dataPercent}</span>
-                </div>
-                <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                    <h3 className='text-2xl'>{dataTitle}</h3>
-                    <p className='text-4xl'>{dataCount}</p>
-                    <span>{dataPercent}</span>
-                </div>
-                <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                    <h3 className='text-2xl'>{dataTitle}</h3>
-                    <p className='text-4xl'>{dataCount}</p>
-                    <span>{dataPercent}</span>
-                </div>
-                <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                    <h3 className='text-2xl'>{dataTitle}</h3>
-                    <p className='text-4xl'>{dataCount}</p>
-                    <span>{dataPercent}</span>
-                </div>
-                <div className='bg-white flex flex-col items-center gap-3 p-3 rounded-lg shadow-[#00000038] shadow-lg'>
-                    <h3 className='text-2xl'>{dataTitle}</h3>
-                    <p className='text-4xl'>{dataCount}</p>
-                    <span>{dataPercent}</span>
-                </div>
-            </section>
-        </div>
+        <section>
+            <div className={`bg-white p-5 rounded-lg h-50 shadow-[#00000038] shadow-lg ${style}`}>
+                <h3 className='text-xl font-semibold'>{dataTitle}</h3>
+                <p className='text-5xl font-medium'>{dataCount}</p>
+                <div>{loader}</div>
+                <LinkBtn icon={icon} text={text} className={`text-orange-700 text-sm ${linkStyle}`} />
+            </div>
+        </section>
     )
 }
 

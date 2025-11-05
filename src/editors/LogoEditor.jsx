@@ -28,13 +28,13 @@ const LogoEditor = () => {
   };
 
   return (
-    <div className="p-4 border rounded-lg bg-white shadow-md w-fit">
+    <div className="border rounded-lg bg-white shadow-md p-4">
       <h2 className="text-lg font-semibold mb-2">Logo Editor</h2>
       <input
         type="file"
         accept="image/*"
         onChange={handleImageUpload}
-        className="block mb-3"
+        className="mb-3"
       />
       {image && (
         <img

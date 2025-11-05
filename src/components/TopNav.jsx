@@ -1,14 +1,14 @@
 import { Bell, ChevronDown, File, Logs, Search, Settings, User2 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import profile from "../assets/Image1.jpg"
 import Btn from './Btn'
-import { useAuth } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 
 const TopNav = () => {
     const [dopeDown, setDopeDown] = useState(false)
 
-    const { logout } = useAuth();
+    const { logout } = useContext(AuthContext);
 
     const handleDopeDown = () => {
         setDopeDown((prev) => !prev);

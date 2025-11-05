@@ -1,9 +1,6 @@
 import React from 'react'
 import Editor from '../../components/Editor'
 
-
-
-
 const AddNewPost = () => {
   return (
     <div className='space-y-5'>

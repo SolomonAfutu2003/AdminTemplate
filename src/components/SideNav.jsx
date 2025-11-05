@@ -13,21 +13,9 @@ const SideNav = () => {
             <ul>
                 <li>
                     <LinkBtn
-                        to="/"
+                        to="/blog_dashboard"
                         text="Blog Dashboard"
                         icon={<Pencil size={15} />}
-                        className={({ isActive }) =>
-                            `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
-                                ? "border-l-4 border-l-blue-600 text-blue-600"
-                                : "text-gray-500 hover:text-blue-600"
-                            }`
-                        }
-                    />                </li>
-                <li>
-                    <LinkBtn
-                        to="/blog_posts"
-                        text="Blog Posts"
-                        icon={<Notebook size={15} />}
                         className={({ isActive }) =>
                             `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
                                 ? "border-l-4 border-l-blue-600 text-blue-600"
@@ -38,9 +26,9 @@ const SideNav = () => {
                 </li>
                 <li>
                     <LinkBtn
-                        to="/add_new_post"
-                        text="Add New Post"
-                        icon={<FilePlus size={15} />}
+                        to="/blog_posts"
+                        text="Blog Posts"
+                        icon={<Notebook size={15} />}
                         className={({ isActive }) =>
                             `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
                                 ? "border-l-4 border-l-blue-600 text-blue-600"
@@ -64,22 +52,9 @@ const SideNav = () => {
                 </li>
                 <li>
                     <LinkBtn
-                        to="/nav_editor"
-                        text="Nav Editor"
-                        icon={<User2 size={15} />}
-                        className={({ isActive }) =>
-                            `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
-                                ? "border-l-4 border-l-blue-600 text-blue-600"
-                                : "text-gray-500 hover:text-blue-600"
-                            }`
-                        }
-                    />
-                </li>
-                <li>
-                    <LinkBtn
                         to="/post_editor"
                         text="Post Editor"
-                        icon={<User2 size={15} />}
+                        icon={<FilePlus size={15} />}
                         className={({ isActive }) =>
                             `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
                                 ? "border-l-4 border-l-blue-600 text-blue-600"
@@ -103,8 +78,8 @@ const SideNav = () => {
                 </li>
                 <li>
                     <LinkBtn
-                        to="/logo_editor"
-                        text="logo_editor"
+                        to='/navigation_menu'
+                        text="Navigation Menu"
                         icon={<User2 size={15} />}
                         className={({ isActive }) =>
                             `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
@@ -114,11 +89,11 @@ const SideNav = () => {
                         }
                     />
                 </li>
-                {/* <li>
+                <li>
                     <LinkBtn
-                        to="/forms_and_components"
-                        text="Forms And Components"
-                        icon={<Columns3 size={15} />}
+                        to='/product_editor'
+                        text="Product Editor"
+                        icon={<User2 size={15} />}
                         className={({ isActive }) =>
                             `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
                                 ? "border-l-4 border-l-blue-600 text-blue-600"
@@ -127,33 +102,6 @@ const SideNav = () => {
                         }
                     />
                 </li>
-                <li>
-                    <LinkBtn
-                        to="/tables"
-                        text="Tables"
-                        icon={<Table2 size={15} />}
-                        className={({ isActive }) =>
-                            `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
-                                ? "border-l-4 border-l-blue-600 text-blue-600"
-                                : "text-gray-500 hover:text-blue-600"
-                            }`
-                        }
-                    />
-                </li>
-               
-                <li>
-                    <LinkBtn
-                        to="/errors"
-                        text="Errors"
-                        icon={<AlertOctagon size={15} />}
-                        className={({ isActive }) =>
-                            `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
-                                ? "border-l-4 border-l-blue-600 text-blue-600"
-                                : "text-gray-500 hover:text-blue-600"
-                            }`
-                        }
-                    />
-                </li> */}
             </ul>
         </div>
     )

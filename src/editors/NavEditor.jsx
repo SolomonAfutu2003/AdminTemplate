@@ -12,7 +12,7 @@ const NavEditor = () => {
             setLinks(JSON.parse(saved));
         } else {
             const defaults = [
-                { to: "/home", text: "Home", icon: "" },
+                { to: "/", text: "Home", icon: "" },
             ];
             setLinks(defaults);
             localStorage.setItem("navLinks", JSON.stringify(defaults)); // save defaults
@@ -44,41 +44,41 @@ const NavEditor = () => {
     };
 
     return (
-        <div className="space-y-4 p-4">
-            <h2 className="text-xl font-bold">Edit Navigation</h2>
-
-            {links.map((link, i) => (
-                <div key={i} className="space-y-2 p-2 rounded relative">
-                    <label htmlFor="">Link Text </label>
-                    <input
-                        type="text"
-                        value={link.text}
-                        onChange={(e) => updateLink(i, "text", e.target.value)}
-                        className="border p-2 w-full rounded"
-                        placeholder="Link Text"
-                    />
-
-
-                    <label htmlFor=""> Route Path</label>
-                    <input
-                        type="text"
-                        value={link.to}
-                        onChange={(e) => updateLink(i, "to", e.target.value)}
-                        className="border p-2 w-full rounded"
-                        placeholder="Route Path"
-                    />
+        <div className="space-y-3">
+            <div className="flex flex-col gap-4">
+                {links.map((link, i) => (
+                    <div key={i} className="space-y-5 p-2 rounded-lg relative bg-white shadow-lg border">
+                        <div className="mb-1 font-bold text-lg">Link Text </div>
+                        <input
+                            type="text"
+                            value={link.text}
+                            onChange={(e) => updateLink(i, "text", e.target.value)}
+                            className="border p-2 w-full rounded"
+                            placeholder="Link Text"
+                        />
 
 
-                    {/* Remove button */}
-                    <button
-                        onClick={() => removeLink(i)}
-                        className="absolute top-2 right-2 text-red-500"
-                    >
-                        <Trash />
-                    </button>
-                </div>
-            ))}
+                        <div className="mb-1 font-bold text-lg"> Route Path</div>
+                        <input
+                            type="text"
+                            value={link.to}
+                            onChange={(e) => updateLink(i, "to", e.target.value)}
+                            className="border p-2 w-full rounded"
+                            placeholder="Route Path"
+                        />
 
+
+                        {/* Remove button */}
+                        <button
+                            onClick={() => removeLink(i)}
+                            className="absolute top-2 right-2 text-red-500"
+                        >
+                            <Trash />
+                        </button>
+                    </div>
+                ))}
+
+            </div>
             {/* Add new link button */}
             <button
                 onClick={addLink}

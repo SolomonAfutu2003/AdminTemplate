@@ -1,48 +1,39 @@
-import React, { useState } from "react";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import React from "react";
+import { EllipsisVertical } from "lucide-react";
+import { getCategoryColor } from "../utils/CategoryColors"; // adjust path
 
 const BlogCards = ({
   category,
   title,
   text,
   date,
-  image,
   blogImage,
   cardStyle,
-  imagePosition,
-  categoryPosition,
-  subStyle,
-  showBookmark = false,
-  isHtml = false, // 🔹 new prop to tell us if text is HTML
+  // imagePosition,
+  showMenu = false,
+  isHtml = false,// 🔹 new prop to tell us if text is HTML
+  onclick
 }) => {
-  const [bookmarked, setBookmarked] = useState(false);
-
-  const toggleBookmark = () => {
-    setBookmarked((prev) => !prev);
-  };
+  // const [bookmarked, setBookmarked] = useState(false);
+  const categoryColor = getCategoryColor(category);
 
   return (
     <div>
-      <div className={`bg-white rounded-lg h-full space-y-3 ${cardStyle}`}>
+      <div className={`bg-white rounded-lg space-y-3 shadow-xl relative ${cardStyle}`}>
         {/* Image section */}
-        <section className="relative z-0">
-          <div className="w-full h-40 rounded-t-lg overflow-hidden">
+        <section>
+          {blogImage && (<div className="w-full h-40 rounded-t-lg overflow-hidden">
             <img
               className="w-full h-full object-cover"
               src={blogImage}
               alt=""
             />
-          </div>
+          </div>)}
           {category && (
-            <div className={`absolute rounded-lg top-2 right-3 ${categoryPosition}`}>
-              <p className="px-2 py-1">{category}</p>
-            </div>
-          )}
-          {image && (
             <div
-              className={`w-10 h-10 rounded-full overflow-hidden absolute border-2 border-white ${imagePosition}`}
+              className={`absolute top-2 right-3 text-white text-sm font-semibold rounded-lg px-2 py-1 shadow ${categoryColor}`}
             >
-              <img className="w-full h-full object-cover" src={image} alt="" />
+              <p className="px-2 py-1">{category}</p>
             </div>
           )}
         </section>
@@ -54,33 +45,29 @@ const BlogCards = ({
               {title}
             </h2>
 
-            <div className="text-base text-gray-600 text-left ProseMirror">
+            <div className="text-base text-gray-600 text-left line-clamp-6 ProseMirror">
               {isHtml ? (
                 <div dangerouslySetInnerHTML={{ __html: text }} />
               ) : (
-                <p>{text}</p>
+                <p className="">{text}</p>
               )}
             </div>
           </div>
 
           {/* Footer section */}
-          <div className={`relative ${subStyle}`}>
-            <div className="flex gap-3">
-              <div className="flex flex-col">
-                <span className="text-lg text-gray-600 font-bold">{date}</span>
-              </div>
-            </div>
+          <div className='flex justify-between p-3'>
+
             <div>
-              {showBookmark && (
+              <span className="text-lg text-gray-600 font-bold">{date}</span>
+            </div>
+
+            <div>
+              {showMenu && (
                 <button
-                  onClick={toggleBookmark}
+                  onClick={onclick}
                   className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
                 >
-                  {bookmarked ? (
-                    <BookmarkCheck className="text-blue-600" size={20} />
-                  ) : (
-                    <Bookmark className="text-gray-600" size={20} />
-                  )}
+                  <EllipsisVertical className="text-blue-600" size={20} />
                 </button>
               )}
             </div>

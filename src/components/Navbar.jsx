@@ -70,11 +70,11 @@ const Navbar = () => {
     const [image, setImage] = useState("");
 
     useEffect(() => {
-      const saved = localStorage.getItem("logoSection");
-      if (saved) {
-        const { image } = JSON.parse(saved);
-        setImage(image || "");
-      }
+        const saved = localStorage.getItem("logoSection");
+        if (saved) {
+            const { image } = JSON.parse(saved);
+            setImage(image || "");
+        }
     }, []);
 
     const tabs = [
@@ -85,11 +85,11 @@ const Navbar = () => {
 
 
     return (
-        <div className="sticky top-0 bg-white flex flex-col shadow-lg">
+        <div className="sticky z-10 top-0 bg-white flex flex-col shadow-lg">
             <section className="min-h-20 py-3 px-10 flex justify-between items-center relative">
-                <div>
-                    <Logo image={image} />
-                </div>
+                {image &&
+                    <div> <Logo image={image} /> </div>
+                }
                 {visibility.navbar && (
                     <div>
                         <div className="flex gap-3">

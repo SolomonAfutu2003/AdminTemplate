@@ -7,7 +7,7 @@ import ClientFoot from '../components/ClientFoot'
 const ClientLayout = () => {
 
   return (
-    <div >
+    <div>
       <Navbar />
       <Outlet />
       <ClientFoot />

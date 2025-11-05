@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,10 +12,15 @@ import {
 } from "chart.js";
 import { Line, Pie } from "react-chartjs-2";
 import LinkBtn from '../../components/LinkBtn';
-import { Check, EllipsisVertical, MoveRight, XIcon } from 'lucide-react';
+import { Check, EllipsisVertical, MoveRight, XIcon, ChevronDown } from 'lucide-react';
 import profile from "../../assets/Image1.jpg"
-import Header from '../../components/sections/Post';
+// import Header from '../../components/sections/Post';
 import Stats from '../../components/sections/Stats';
+import SemiCircleLoadBar from '../../components/SemiCircleLoadBar';
+import Btn from '../../components/Btn';
+// import { getVisibleBlogs } from "../../api";
+import blogApi from "../../API/blogAPI";
+
 
 
 // Register Chart.js components
@@ -32,6 +37,24 @@ ChartJS.register(
 
 
 const BlogDashboard = () => {
+    const [totalPosts, setTotalPosts] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const res = await blogApi.getAll();
+                setTotalPosts(res.data.length); // assuming your API returns an array
+            } catch (error) {
+                console.error("Failed to fetch posts:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, []);
+
     const data = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May"],
         datasets: [
@@ -52,45 +75,36 @@ const BlogDashboard = () => {
             legend: { position: "top" },
             title: { display: false, text: "Monthly Sales" },
         },
-    };
-
-    const pieData = {
-        labels: ["10", "20"],
-        datasets: [
-            {
-                data: [10, 20], // ✅ your values here
-                backgroundColor: [
-                    "rgba(34,197,94,0.8)", // green
-                    "rgba(239,68,68,0.8)", // red
-                ],
-                borderWidth: 0,
+        scales: {
+            x: {
+                grid: {
+                    display: false, // removes vertical grid lines
+                },
             },
-        ],
-    }
-
-    const pieOption = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { position: "bottom" },
-            tooltip: {
-                callbacks: {
-                    label: (context) => `${context.label}: ${context.raw}`,
+            y: {
+                grid: {
+                    display: false, // removes horizontal grid lines
                 },
             },
         },
-    }
+    };
 
     const DiscussionsData = [
         {
+            id: 1,
+            rank: "01",
             title: "John Doe on Hello World!- 3 days ago",
             discussion: "Well, the way they make shows is, they make one show ..."
         },
         {
+            id: 2,
+            rank: "02",
             title: "John Doe on Hello World!- 3 days ago",
             discussion: "Well, the way they make shows is, they make one show ..."
         },
         {
+            id: 3,
+            rank: "03",
             title: "John Doe on Hello World!- 3 days ago",
             discussion: "Well, the way they make shows is, they make one show ..."
         },
@@ -120,16 +134,16 @@ const BlogDashboard = () => {
         }
     ]
 
-    const [header, setHeader] = useState({
+    const header = ({
         heading: "Dashboard",
         subheading: "Blog Overview",
     });
 
-    const [stats, setStats] = useState({
-        dataTitle: "Posts",
-        dataCount: 2000,
-        dataPercent: 4.50,
-    });
+    // const [stats, setStats] = useState({
+    //     dataTitle: "Posts",
+    //     dataCount: 2000,
+    //     dataPercent: 4.50,
+    // });
 
     // useEffect(() => {
     //     const saved = localStorage.getItem("headerSection");
@@ -138,12 +152,12 @@ const BlogDashboard = () => {
     //     }
     // }, []);
 
-    useEffect(() => {
-        const saved = localStorage.getItem("statsSection");
-        if (saved) {
-            setStats(JSON.parse(saved));
-        }
-    }, []);
+    // useEffect(() => {
+    //     const saved = localStorage.getItem("statsSection");
+    //     if (saved) {
+    //         setStats(JSON.parse(saved));
+    //     }
+    // }, []);
 
     return (
         <div className='space-y-5'>
@@ -152,98 +166,97 @@ const BlogDashboard = () => {
                 <h4 className='text-3xl text-gray-700 font-bold'>{header.subheading}</h4>
             </header>
             <main className='space-y-5'>
-                <Stats dataTitle={stats.dataTitle} dataCount={stats.dataCount} dataPercent={stats.dataPercent} />
-                <section className='w-full flex gap-5'>
-                    <div className='bg-white rounded-lg shadow-[#00000038] shadow-lg w-[70%]'>
-                        <div className='border-b border-b-gray-300 py-4 px-2'>
-                            <h3 className='text-gray-600'>Users Overview</h3>
-                        </div>
-                        <div className='bg-gray-100 py-2 px-3 border-b border-b-gray-300 flex justify-end'>
-                            <LinkBtn text={"View full Report"} icon={<MoveRight size={15} />} className={"flex items-center gap-3 border border-gray-400 py-2 px-4 text-xs rounded-lg"} />
-                        </div>
-                        <div className='h-50 p-4'>
-                            <Line data={data} options={options} />
-                        </div>
-                    </div>
-
-                    <div className='bg-white rounded-lg shadow-[#00000038] shadow-lg w-[30%]'>
-                        <div className='border-b border-b-gray-300 py-4 px-2'>
-                            <h3 className='text-gray-600'>Users Overview</h3>
-                        </div>
-                        <div className='flex justify-center items-center p-6'>
-                            <div className='w-[190px] h-[190px]'>
-                                <Pie data={pieData} options={pieOption} />
-                            </div>
-                        </div>
-                        <div className='py-2 px-3 border-t border-t-gray-300 flex justify-end'>
-                            <LinkBtn text={"View full Report"} icon={<MoveRight size={15} />} className={"flex items-center gap-3 py-2 px-4 text-xs rounded-lg"} />
-                        </div>
-                    </div>
+                <section className='grid grid-cols-4 gap-5'>
+                    <Stats
+                        dataTitle="Total Posts"
+                        dataCount={loading ? "..." : totalPosts}
+                        text="View Posts"
+                        icon={<MoveRight size={15} />}
+                        linkStyle="flex items-center gap-2"
+                        style="space-y-6"
+                    />
+                    <Stats dataTitle={"Total Views"} dataCount={"10"} text={"View Report"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
+                    <Stats dataTitle={"Total Comments"} dataCount={"10"} text={"View Comments"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
+                    <Stats dataTitle={"Quarter Post Review"} loader={<SemiCircleLoadBar />} style={"text-center space-y-3"} text={"Review"} icon={<MoveRight size={15} />} linkStyle={"flex justify-center items-center gap-2"} />
                 </section>
                 <section className="flex gap-4">
-                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-[30%] h-full">
-                        <div className='border-b border-b-gray-300 py-4 px-2'>
-                            <h3 className='text-gray-800'>Users Overview</h3>
+                    <section className='w-[50%] space-y-5'>
+                        <div className='bg-white rounded-lg shadow-[#00000038] shadow-lg w-full h-80 p-6 space-y-5'>
+                            <div className='flex justify-between items-center'>
+                                <h3 className='text-black font-bold'>Blogs Chart</h3>
+                                <div className='flex justify-between gap-5 text-[11px] font-medium'>
+                                    <p>CURRENT MONTH</p>
+                                    <p>PAST MONTH</p>
+                                </div>
+                            </div>
+                            <div className='h-50'>
+                                <Line data={data} options={options} />
+                            </div>
                         </div>
-                        <div className='flex flex-col space-y-4 px-3 py-3'>
-                            <input type="search" name="" id="" placeholder='Brave New World' className='border border-gray-300 p-2 rounded-lg transition delay-150 duration-200 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100' />
-                            <textarea name="" id="" className='border border-gray-300 h-80 rounded-lg p-2 transition delay-150 duration-200 ease-in-out outline-0 focus:border-blue-600 focus:shadow-lg focus:shadow-blue-100' placeholder='Words'></textarea>
+                        <div className='grid grid-cols-3 gap-4'>
+                            <div className='bg-white p-3 rounded-lg shadow-[#00000038] shadow-lg space-y-4'>
+                                <h3 className="text-gray-400 text-base font-semibold">Top month</h3>
+                                <div>
+                                    <p className='text-orange-900 text-2xl font-semibold'>November</p>
+                                    <p>2019</p>
+                                </div>
+                            </div>
+                            <div className='bg-white p-3 rounded-lg shadow-[#00000038] shadow-lg space-y-4'>
+                                <h3 className="text-gray-400 text-base font-semibold">Top month</h3>
+                                <div>
+                                    <p className='text-orange-900 text-2xl font-semibold'>November</p>
+                                    <p>2019</p>
+                                </div>
+                            </div>
+                            <div className='bg-white p-3 rounded-lg shadow-[#00000038] shadow-lg space-y-4'>
+                                <h3 className="text-gray-400 text-base font-semibold">Top month</h3>
+                                <div>
+                                    <p>November</p>
+                                    <p>2019</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className='flex justify-start pb-2 px-3'>
-                            <button className='bg-blue-600 text-white px-3 py-2 rounded-lg'>Create Draft</button>
+                    </section>
+                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-[50%] p-6 space-y-5 h-full">
+                        <div className='flex justify-between'>
+                            <h3 className='text-xl font-semibold'>Post Rankings</h3>
+                            <Btn text={"Sort by Newest"} icon={<ChevronDown />} style={"flex flex-row-reverse items-center"} />
                         </div>
-                    </div>
-
-                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-[45%] h-full">
-                        <div className='border-b border-b-gray-300 py-4 px-2'>
-                            <h3 className='text-gray-800'>Discussions</h3>
+                        <div className='h-[320px]'>
+                            <table className='w-[100%]'>
+                                <thead>
+                                    <tr>
+                                        <th className='w-[20%] text-left text-gray-600 text-xs font-medium py-4'>Rank</th>
+                                        <th className='w-[60%] text-left text-gray-600 text-xs font-medium py-4'>Post Title</th>
+                                        <th className='w-[20%] text-left text-gray-600 text-xs font-medium py-4'>Views</th>
+                                    </tr>
+                                </thead>
+                                {DiscussionsData.map((post) => (
+                                    <tbody key={post.id}>
+                                        <tr>
+                                            <td className='py-4 text-sm font-medium'>{post.rank}</td>
+                                            <td className='py-4 text-xs font-medium'>
+                                                <div className='flex gap-3'>
+                                                    <div className='w-8 h-8'><img src={profile} alt="" className='w-full h-full object-cover' /></div>
+                                                    <div className='flex flex-col'>
+                                                        <p>{post.title}</p>
+                                                        <p>{post.discussion}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className='py-4'>$8,000</td>
+                                        </tr>
+                                    </tbody>
+                                ))}
+                            </table>
                         </div>
                         <div>
-                            {DiscussionsData.map((data, idx) => (
-                                <ul key={idx}>
-                                    <li className='flex gap-3 p-3 border-b border-b-gray-400'>
-                                        <div className='w-12 h-12' >
-                                            <img className="w-full h-full" src={profile} alt="" />
-                                        </div>
-                                        <div className='flex flex-col'>
-                                            <h3>{data.title}</h3>
-                                            <p> {data.discussion}</p>
-                                            <div className='flex'>
-                                                <button className='flex items-center gap-1 text-gray-600 border border-r-0 border-gray-300 rounded-l-lg py-1 px-4 hover:shadow-lg hover:shadow-gray-300 transition ease-in-out duration-200 delay-100'><Check color='green' size={15} /> Approve</button>
-                                                <button className='flex items-center gap-1 text-gray-600 border border-gray-300 py-1 px-4 hover:shadow-lg hover:shadow-gray-300 transition ease-in-out duration-200 delay-100'><XIcon color='red' size={15} /> Reject</button>
-                                                <button className='flex items-center gap-1 text-gray-600 border border-l-0 border-gray-300 rounded-r-lg py-1 px-4 hover:shadow-lg hover:shadow-gray-300 transition ease-in-out duration-200 delay-100'><EllipsisVertical size={15} /> Edit</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            ))}
-                        </div>
-                        <div className='flex justify-center items-center p-3'>
-                            <button className='border border-gray-400 text-gray-600 px-2 py-1 rounded-lg'>View All Comments</button>
-                        </div>
-                    </div>
-
-                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-[25%] h-full">
-                        <div className='border-b border-b-gray-300 py-4 px-2'>
-                            <h3 className='text-gray-800'>Top Referrals</h3>
-                        </div>
-                        <div className='flex flex-col'>
-                            {ReferralsData.map((data, idx) => (
-                                <ul key={idx}>
-                                    <li className='flex justify-between border-b border-b-gray-400 px-2 py-3 text-gray-600'>
-                                        <h3>{data.name}</h3>
-                                        <p> {data.number}</p>
-                                    </li>
-                                </ul>
-                            ))}
-                        </div>
-                        <div className='flex justify-end p-3'>
-                            <LinkBtn text={"Full report"} icon={<MoveRight size={15} />} className={"flex items-center gap-3 py-2 px-4 text-xs rounded-lg"} />
+                            <LinkBtn text={"View All"} icon={<MoveRight />} className={"text-orange-700 flex items-center gap-1"} />
                         </div>
                     </div>
                 </section>
             </main>
-        </div>
+        </div >
     )
 }
 
