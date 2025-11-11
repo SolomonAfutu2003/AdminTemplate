@@ -9,7 +9,7 @@ const productApi = {
   update: (id, data) => axiosClient.put(`/products/${id}`, data, {
     headers: { "Content-Type": "multipart/form-data" },
   }),
-  delete: (id) => axiosClient.delete(`/products/${id}`),
+  delete: (id) => axiosClient.patch(`/products/${id}/hide`),
 };
 
 export default productApi;

@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, File, Logs, Search, Settings, User2 } from 'lucide-react'
+import { Bell, ChevronDown, Search, Settings, User2 } from 'lucide-react'
 import React, { useState,useContext } from 'react'
 import profile from "../assets/Image1.jpg"
 import Btn from './Btn'
@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 const TopNav = () => {
     const [dopeDown, setDopeDown] = useState(false)
 
-    const { logout } = useContext(AuthContext);
+    const { logout,user } = useContext(AuthContext);
 
     const handleDopeDown = () => {
         setDopeDown((prev) => !prev);
@@ -28,7 +28,7 @@ const TopNav = () => {
                     <img src={profile} alt="" className='w-full h-full object-cover' />
                 </div>
                 <div className='flex items-center' >
-                    <p>Solomon</p>
+                    <p>{user.name}</p>
                     <ChevronDown size={20} />
                 </div>
 
@@ -37,8 +37,6 @@ const TopNav = () => {
                         <ul className='p-2 space-y-3'>
                             <li className='flex gap-2 items-center'><User2 size={15} />Profile</li>
                             <li className='flex gap-2 items-center'><Settings size={15} />Edit profile</li>
-                            <li className='flex gap-2 items-center'><File size={15} />File</li>
-                            <li className='flex gap-2 items-center'><Logs size={15} />Transactions</li>
                         </ul>
                         <div className='border-t p-3 flex justify-center'>
                             <Btn onClick={logout} text={"Logout"} style={"text-red-500"} />

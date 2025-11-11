@@ -18,13 +18,14 @@ const Editor = ({ content, onChange }) => {
             }),
             Placeholder.configure({
                 placeholder: 'Write something …',
-              }),
+            }),
         ],
         content: content,
         onUpdate: ({ editor }) => {
             onChange && onChange(editor.getHTML());
         },
     });
+
 
     return (
         <div className="border border-gray-300 rounded-lg p-2 min-h-[250px] focus-within:border-blue-500">

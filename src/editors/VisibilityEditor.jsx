@@ -7,6 +7,7 @@ const sections = [
   { id: "footer", label: "Footer" },
   { id: "button", label: "Button" },
   { id: "blog", label: "Blog Section" },
+  { id: "product", label: "Product Section" },
   { id: "latest", label: "Latest" },
   { id: "trending", label: "Trending" },
   { id: "national", label: "National" },

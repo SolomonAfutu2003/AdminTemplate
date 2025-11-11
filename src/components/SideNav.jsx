@@ -39,6 +39,19 @@ const SideNav = () => {
                 </li>
                 <li>
                     <LinkBtn
+                        to="/product"
+                        text="Product"
+                        icon={<Notebook size={15} />}
+                        className={({ isActive }) =>
+                            `hover:border-l-4 hover:border-l-blue-600 hover:bg-gray-100 py-3 px-5 text-sm flex flex-row-reverse gap-2 justify-end items-center ${isActive
+                                ? "border-l-4 border-l-blue-600 text-blue-600"
+                                : "text-gray-500 hover:text-blue-600"
+                            }`
+                        }
+                    />
+                </li>
+                <li>
+                    <LinkBtn
                         to="/user_profile"
                         text="User Profile"
                         icon={<User2 size={15} />}

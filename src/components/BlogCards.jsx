@@ -45,11 +45,11 @@ const BlogCards = ({
               {title}
             </h2>
 
-            <div className="text-base text-gray-600 text-left line-clamp-6 ProseMirror">
+            <div className="text-base/tight text-gray-600 text-left line-clamp-3  ProseMirror">
               {isHtml ? (
                 <div dangerouslySetInnerHTML={{ __html: text }} />
               ) : (
-                <p className="">{text}</p>
+                <p className="leading-8">{text}</p>
               )}
             </div>
           </div>

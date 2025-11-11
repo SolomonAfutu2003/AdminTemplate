@@ -175,8 +175,8 @@ const BlogDashboard = () => {
                         linkStyle="flex items-center gap-2"
                         style="space-y-6"
                     />
-                    <Stats dataTitle={"Total Views"} dataCount={"10"} text={"View Report"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
-                    <Stats dataTitle={"Total Comments"} dataCount={"10"} text={"View Comments"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
+                    <Stats dataTitle={"Total Views"} dataCount={0} text={"View Report"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
+                    <Stats dataTitle={"Total Comments"} dataCount={0} text={"View Comments"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
                     <Stats dataTitle={"Quarter Post Review"} loader={<SemiCircleLoadBar />} style={"text-center space-y-3"} text={"Review"} icon={<MoveRight size={15} />} linkStyle={"flex justify-center items-center gap-2"} />
                 </section>
                 <section className="flex gap-4">

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@plugin "@tailwindcss/typography";
+
 /* Base ProseMirror styles */
 .ProseMirror {
     @apply outline-none whitespace-pre-wrap break-words p-2 leading-relaxed ;
@@ -64,6 +66,23 @@
   .ProseMirror hr {
     @apply border-0 border-t border-gray-200 my-6;
   }
+
+  /* Images */
+.ProseMirror img {
+  @apply max-w-full h-auto rounded-lg my-4 shadow-sm;
+  display: block; /* ensures images take up their own line */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Centered figure images (if you use <figure>) */
+.ProseMirror figure {
+  @apply my-4 text-center;
+}
+
+.ProseMirror figcaption {
+  @apply text-sm text-gray-500 italic mt-2;
+}
   
   .ProseMirror p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);

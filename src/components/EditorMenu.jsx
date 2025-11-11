@@ -41,9 +41,16 @@ const EditorMenu = ({ editor }) => {
   };
 
   // Add image from URL
-  const handleAddImageUrl = () => {
-    const url = prompt("Enter image URL");
-    if (url) editor.chain().focus().setImage({ src: url }).run();
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result;
+      editor.chain().focus().setImage({ src: base64 }).run();
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -109,7 +116,7 @@ const EditorMenu = ({ editor }) => {
       <button
         onMouseDown={(e) => {
           e.preventDefault();
-          handleAddImageUrl();
+         handleImageUpload();
         }}
         className="px-2 py-1 rounded hover:bg-gray-100"
         title="Insert image by URL"

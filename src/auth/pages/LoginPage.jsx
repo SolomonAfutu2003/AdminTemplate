@@ -2,8 +2,9 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import axiosClient from "../../API/axiosClient";
-import { BASE_URL } from "../../constant"; // or use your constants.js setup
+// import axiosClient from "../../API/axiosClient";
+// import { BASE_URL } from "../../constant"; // or use your constants.js setup
+import authApi from "../../API/authAPI";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -26,7 +27,7 @@ const Login = () => {
 
     try {
       // ✅ Use axiosClient instead of fetch
-      const res = await axiosClient.post(`/auth/login`, { email, password });
+      const res = await authApi.login({ email, password });
 
       // Expected response: { token, user }
       const { token, user } = res.data;

@@ -14,9 +14,9 @@ const AdminLayout = () => {
             <div className='flex-1 flex flex-col '>
                 <TopNav />
                 <main className="bg-gray-100 flex-1 overflow-auto">
-                    <div className='p-5'><Outlet /></div>
-                    <Footer />
+                    <div className='p-5'><Outlet /></div> 
                 </main>
+                <Footer />
             </div>
         </div>
     )

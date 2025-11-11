@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 // import profile from "../../assets/Image1.jpg";
 import BlogCards from "../../components/BlogCards";
 import Btn from "../../components/Btn";
-import blogApi from "../../API/blogAPI";
+import productApi from "../../API/productAPI";
 
-const BlogPosts = () => {
+const Product = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [blogs, setBlogs] = useState([]);
+  const [products, setProducts] = useState([]);
   const [showMenu, setShowMenu] = useState("");
   const navigate = useNavigate();
   const menuRef = useRef(null); // ✅ for navigation
@@ -19,8 +19,8 @@ const BlogPosts = () => {
       try {
         setLoading(true);
         setError("");
-        const res = await blogApi.getAll();
-        setBlogs(res.data); // make sure API returns an array
+        const res = await productApi.getAll();
+        setProducts(res.data); // make sure API returns an array
       } catch (err) {
         console.error("Error fetching blogs:", err);
         setError("Failed to load blog posts. Please try again later.");
@@ -51,8 +51,8 @@ const BlogPosts = () => {
 
     try {
       setLoading(true);
-      await blogApi.delete(id);
-      setBlogs((prev) => prev.filter((b) => b.id !== id));
+      await productApi.delete(id);
+      setProducts((prev) => prev.filter((b) => b.id !== id));
       alert("✅ Blog deleted successfully!");
     } catch (err) {
       console.error("Error deleting blog:", err.response?.data || err.message);
@@ -66,11 +66,9 @@ const BlogPosts = () => {
     }
   };
 
-  console.log(menuRef.current)
-
   // 🔹 Edit a blog post
   const handleEdit = (id) => {
-    navigate(`/blogs/edit/${id}`); // ✅ go to edit page
+    navigate(`/product/edit/${id}`); // ✅ go to edit page
   };
 
   const handleShowMenu = (id) => {
@@ -80,7 +78,8 @@ const BlogPosts = () => {
   return (
     <div className="space-y-5">
       <header>
-        <h2 className="text-4xl text-black font-bold">Blog Posts</h2>
+        <h3 className="text-gray-400">Components</h3>
+        <h2 className="text-3xl text-gray-600">Blog Posts</h2>
       </header>
 
       <main className="space-y-5">
@@ -90,33 +89,31 @@ const BlogPosts = () => {
         {/* ✅ Backend blogs */}
         <section className="grid grid-cols-4 gap-4">
           {!loading &&
-            blogs.map((blog) => (
-              <div key={blog.id} className="space-y-3 ">
-                <BlogCards
-                  blogImage={
-                    blog.imageBase64
-                    && `data:image/jpeg;base64,${blog.imageBase64}`
-                  }
-                  title={blog.title}
-                  text={blog.content}
-                  date={blog.createdAt?.slice(0, 10) || "Today"}
-                  isHtml={true}
-                  subStyle="p-3"
-                  showMenu={true}
-                  category={blog.category}
-                  onclick={() => handleShowMenu(blog.id)}
-                />
-                <div className="relative">
-                  {showMenu === blog.id && (
+            products.map((product) => (
+              <div key={product.id} className="space-y-3 ">
+               <BlogCards
+                    title={product.name}
+                    text={product.description}
+                    blogImage={
+                      product.imageBase64
+                        ? `data:image/jpeg;base64,${product.imageBase64}`
+                        : ""
+                    }
+                    isHtml={true}
+                    showMenu={true}
+                    onclick={() => handleShowMenu(product.id)}
+                  />
+                <div className="relative" >
+                  {showMenu === product.id && (
                   <div ref={menuRef} className="w-[40%] absolute -bottom-14 right-0 p-3 bg-white rounded-lg shadow-xl">
                     <Btn
                       text="Edit"
-                      onClick={() => handleEdit(blog.id)}
+                      onClick={() => handleEdit(product.id)}
                       style={" text-blue-400 hover:text-blue-600 px-3 py-1 rounded-lg font-bold"}
                     />
                     <Btn
                       text="Delete"
-                      onClick={() => handleDelete(blog.id)}
+                      onClick={() => handleDelete(product.id)}
                       style={" text-red-400 hover:text-red-600 px-3 py-1 rounded-lg font-bold"}
                     />
                   </div>)}
@@ -129,4 +126,4 @@ const BlogPosts = () => {
   );
 };
 
-export default BlogPosts;
+export default Product;
