@@ -166,7 +166,7 @@ const BlogDashboard = () => {
                 <h4 className='text-3xl text-gray-700 font-bold'>{header.subheading}</h4>
             </header>
             <main className='space-y-5'>
-                <section className='grid grid-cols-4 gap-5'>
+                <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5'>
                     <Stats
                         dataTitle="Total Posts"
                         dataCount={loading ? "..." : totalPosts}
@@ -179,8 +179,8 @@ const BlogDashboard = () => {
                     <Stats dataTitle={"Total Comments"} dataCount={0} text={"View Comments"} icon={<MoveRight size={15} />} linkStyle={"flex items-center gap-2"} style={"space-y-6"} />
                     <Stats dataTitle={"Quarter Post Review"} loader={<SemiCircleLoadBar />} style={"text-center space-y-3"} text={"Review"} icon={<MoveRight size={15} />} linkStyle={"flex justify-center items-center gap-2"} />
                 </section>
-                <section className="flex gap-4">
-                    <section className='w-[50%] space-y-5'>
+                <section className="flex flex-col lg:flex-row gap-4">
+                    <section className='w-full lg:w-[50%] space-y-5'>
                         <div className='bg-white rounded-lg shadow-[#00000038] shadow-lg w-full h-80 p-6 space-y-5'>
                             <div className='flex justify-between items-center'>
                                 <h3 className='text-black font-bold'>Blogs Chart</h3>
@@ -217,7 +217,7 @@ const BlogDashboard = () => {
                             </div>
                         </div>
                     </section>
-                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-[50%] p-6 space-y-5 h-full">
+                    <div className="bg-white flex flex-col rounded-lg shadow-[#00000038] shadow-lg w-full lg:w-[50%] p-6 space-y-5 h-full">
                         <div className='flex justify-between'>
                             <h3 className='text-xl font-semibold'>Post Rankings</h3>
                             <Btn text={"Sort by Newest"} icon={<ChevronDown />} style={"flex flex-row-reverse items-center"} />
@@ -244,7 +244,7 @@ const BlogDashboard = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className='py-4'>$8,000</td>
+                                            <td className='py-4'>8,000</td>
                                         </tr>
                                     </tbody>
                                 ))}

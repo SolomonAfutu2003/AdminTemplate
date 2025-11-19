@@ -7,6 +7,8 @@ const BlogCards = ({
   title,
   text,
   date,
+  description,
+  author,
   blogImage,
   cardStyle,
   // imagePosition,
@@ -40,12 +42,16 @@ const BlogCards = ({
 
         {/* Content section */}
         <section>
-          <div className="p-5">
+          <div className="p-2">
             <h2 className="text-lg text-gray-800 font-bold text-left">
               {title}
             </h2>
 
-            <div className="text-base/tight text-gray-600 text-left line-clamp-3  ProseMirror">
+            <div className="text-base/tight text-gray-600 text-left line-clamp-3 ProseMirror">
+              {description && (
+                <p>{description}</p>
+              )}
+
               {isHtml ? (
                 <div dangerouslySetInnerHTML={{ __html: text }} />
               ) : (
@@ -55,22 +61,26 @@ const BlogCards = ({
           </div>
 
           {/* Footer section */}
-          <div className='flex justify-between p-3'>
+          <div className='flex flex-col justify-between p-3'>
+            <section className="flex justify-between">
+              <div>
+                <span className="text-lg text-gray-600 font-bold">{date}</span>
+              </div>
 
-            <div>
-              <span className="text-lg text-gray-600 font-bold">{date}</span>
-            </div>
-
-            <div>
-              {showMenu && (
-                <button
-                  onClick={onclick}
-                  className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
-                >
-                  <EllipsisVertical className="text-blue-600" size={20} />
-                </button>
-              )}
-            </div>
+              <div>
+                {showMenu && (
+                  <button
+                    onClick={onclick}
+                    className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
+                  >
+                    <EllipsisVertical className="text-blue-600" size={20} />
+                  </button>
+                )}
+              </div>
+            </section>
+            <section>
+              <p>{author}</p>
+            </section>
           </div>
         </section>
       </div>

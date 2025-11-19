@@ -12,8 +12,10 @@ const PostEditor = () => {
     content: "",
     category: "",
     layout: "image-top",
-    image: "", // for preview (base64 or URL)
+    imageUrl: "", // for preview (base64 or URL)
     imageFile: null, // actual file object
+    author:"",
+    description:""
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,12 +35,7 @@ const PostEditor = () => {
           content: data.content || "",
           category: data.category || "",
           layout: data.layout || "image-top",
-          image:
-            data.imageBase64 && data.imageBase64.startsWith("data:")
-              ? data.imageBase64
-              : data.imageBase64
-                ? `data:image/jpeg;base64,${data.imageBase64}`
-                : "https://via.placeholder.com/400x200?text=No+Image",
+          image: data.imageUrl || "https://via.placeholder.com/400x200?text=No+Image",
           imageFile: null,
         });
       } catch (err) {
@@ -76,6 +73,8 @@ const PostEditor = () => {
       formData.append("title", form.title);
       formData.append("content", form.content);
       formData.append("category", form.category);
+      formData.append("author", form.author);
+      formData.append("description", form.description);
       formData.append("layout", form.layout);
       if (form.imageFile) formData.append("image", form.imageFile);
 
@@ -116,7 +115,7 @@ const PostEditor = () => {
         </div>
 
         {/* Form */}
-        <section className="grid grid-cols-2 gap-8">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Side */}
           <div className="flex flex-col gap-8">
             {/* Title */}
@@ -129,6 +128,34 @@ const PostEditor = () => {
                   value={form.title}
                   onChange={handleChange}
                   placeholder="Enter your post title"
+                  className="w-full rounded-lg border focus:ring-2 focus:border-none h-12 p-3 text-base"
+                />
+              </label>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl">
+              <label className="flex flex-col">
+                <p className="font-bold pb-2">Description</p>
+                <input
+                  type="text"
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  placeholder="Enter description"
+                  className="w-full rounded-lg border focus:ring-2 focus:border-none h-12 p-3 text-base"
+                />
+              </label>
+            </div>
+
+            <div className="bg-white p-6 rounded-xl">
+              <label className="flex flex-col">
+                <p className="font-bold pb-2">Author</p>
+                <input
+                  type="text"
+                  name="author"
+                  value={form.author}
+                  onChange={handleChange}
+                  placeholder="Enter author"
                   className="w-full rounded-lg border focus:ring-2 focus:border-none h-12 p-3 text-base"
                 />
               </label>
@@ -154,7 +181,6 @@ const PostEditor = () => {
                 <p className="text-sm text-gray-500">Drag & drop or click</p>
                 <input
                   type="file"
-                  accept="image/*"
                   onChange={handleImageUpload}
                   className="hidden"
                 />

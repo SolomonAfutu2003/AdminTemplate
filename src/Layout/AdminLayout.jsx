@@ -4,17 +4,16 @@ import TopNav from '../components/TopNav'
 import SideNav from '../components/SideNav'
 import Footer from '../components/Footer'
 
-
-
 const AdminLayout = () => {
-
     return (
-        <div className='flex'>
+        <div className='flex min-h-screen bg-gray-100'>
             <SideNav />
-            <div className='flex-1 flex flex-col '>
+            <div className='flex-1 flex flex-col lg:ml-0'>
                 <TopNav />
-                <main className="bg-gray-100 flex-1 overflow-auto">
-                    <div className='p-5'><Outlet /></div> 
+                <main className="flex-1 overflow-auto p-5">
+                    <div className='max-w-7xl mx-auto w-full'>
+                        <Outlet />
+                    </div>
                 </main>
                 <Footer />
             </div>

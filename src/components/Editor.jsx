@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { TextStyle, FontFamily } from '@tiptap/extension-text-style'
+import { TextStyle, FontFamily, Color } from '@tiptap/extension-text-style'
 import EditorMenu from './EditorMenu';
 import Image from '@tiptap/extension-image';
 import { Placeholder } from '@tiptap/extensions';
@@ -9,9 +9,13 @@ import { Placeholder } from '@tiptap/extensions';
 const Editor = ({ content, onChange }) => {
     const editor = useEditor({
         extensions: [StarterKit,
-            TextStyle, FontFamily.configure({
+            TextStyle, 
+            FontFamily.configure({
                 types: ['textStyle'],
             }),
+            Color.configure({
+                types: ['textStyle'], // Enable color on textStyle
+              }),
             Image.configure({
                 inline: true,
                 allowBase64: true,

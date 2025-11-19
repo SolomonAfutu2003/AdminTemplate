@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import blogApi from "../../API/blogAPI";
 import { LoaderCircle } from "lucide-react";
 import SideCard from "../../components/SideCard";
@@ -54,13 +54,11 @@ const PostPage = () => {
     return (
         <div className="flex justify-between p-5">
             <div className="w-[70%] p-4 flex flex-col justify-center items-center">
-                <img src={blog.imageBase64
-                    ? `data:image/jpeg;base64,${blog.imageBase64}`
-                    : "https://via.placeholder.com/400x200?text=No+Image"} alt="" />
-                <h1 className="text-2xl font-bold mb-4">{blog.title}</h1>
-                <MarkdownRenderer content={blog.content} />
+                <img src={blog.imageUrl || "/placeholder.png"} alt="" />
+                <h1 className="text-4xl text-center font-normal mb-4">{blog.title}</h1>
+                <div><MarkdownRenderer content={blog.content} /></div>
                 {/* <div
-                    className="prose"
+                    className=""
                     dangerouslySetInnerHTML={{ __html: }}
                 /> */}
             </div>
@@ -76,7 +74,7 @@ const PostPage = () => {
                                 className="block hover:scale-105 transition transform"
                             >
                                 <SideCard
-                                    image={data.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ""}
+                                    image={data.imageUrl}
                                     title={data.title}
                                     content={data.content}
                                     isHtml={true}

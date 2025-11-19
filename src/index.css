@@ -4,70 +4,70 @@
 
 /* Base ProseMirror styles */
 .ProseMirror {
-    @apply outline-none whitespace-pre-wrap break-words p-2 leading-relaxed ;
-  }
-  
-  /* Headings */
-  .ProseMirror h1 {
-    @apply text-3xl font-bold my-4;
-  }
-  .ProseMirror h2 {
-    @apply text-2xl font-bold my-3;
-  }
-  .ProseMirror h3 {
-    @apply text-xl font-semibold my-2;
-  }
-  
-  /* Paragraph */
-  .ProseMirror p {
-    @apply my-2 text-base;
-  }
-  
-  /* Bold + Italic */
-  .ProseMirror strong {
-    @apply font-bold;
-  }
-  .ProseMirror em {
-    @apply italic;
-  }
-  
-  /* Blockquote */
-  .ProseMirror blockquote {
-    @apply border-l-4 border-gray-200 pl-4 my-4 text-gray-700 italic;
-  }
-  
-  /* Lists */
-  .ProseMirror ul {
-    @apply list-disc pl-6 my-2;
-  }
-  .ProseMirror ol {
-    @apply list-decimal pl-6 my-2;
-  }
-  .ProseMirror li {
-    @apply my-1;
-  }
-  
-  /* Inline Code */
-  .ProseMirror code {
-    @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
-  }
-  
-  /* Code Block */
-  .ProseMirror pre {
-    @apply bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto my-4 font-mono text-sm;
-  }
-  
-  /* Links */
-  .ProseMirror a {
-    @apply text-blue-600 underline;
-  }
-  
-  /* Horizontal Rule */
-  .ProseMirror hr {
-    @apply border-0 border-t border-gray-200 my-6;
-  }
+  @apply outline-none whitespace-pre-wrap break-words p-2 leading-relaxed;
+}
 
-  /* Images */
+/* Headings */
+.ProseMirror h1 {
+  @apply text-3xl font-bold my-4;
+}
+.ProseMirror h2 {
+  @apply text-2xl font-bold my-3;
+}
+.ProseMirror h3 {
+  @apply text-xl font-semibold my-2;
+}
+
+/* Paragraph */
+.ProseMirror p {
+  @apply my-2 text-base;
+}
+
+/* Bold + Italic */
+.ProseMirror strong {
+  @apply font-bold;
+}
+.ProseMirror em {
+  @apply italic;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  @apply border-l-4 border-gray-200 pl-4 my-4 text-gray-700 italic;
+}
+
+/* Lists */
+.ProseMirror ul {
+  @apply list-disc pl-6 my-2;
+}
+.ProseMirror ol {
+  @apply list-decimal pl-6 my-2;
+}
+.ProseMirror li {
+  @apply my-1;
+}
+
+/* Inline Code */
+.ProseMirror code {
+  @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+/* Code Block */
+.ProseMirror pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto my-4 font-mono text-sm;
+}
+
+/* Links */
+.ProseMirror a {
+  @apply text-blue-600 underline;
+}
+
+/* Horizontal Rule */
+.ProseMirror hr {
+  @apply border-0 border-t border-gray-200 my-6;
+}
+
+/* Images */
 .ProseMirror img {
   @apply max-w-full h-auto rounded-lg my-4 shadow-sm;
   display: block; /* ensures images take up their own line */
@@ -83,12 +83,11 @@
 .ProseMirror figcaption {
   @apply text-sm text-gray-500 italic mt-2;
 }
-  
-  .ProseMirror p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    float: left;
-    color: #9ca3af; /* Tailwind gray-400 */
-    pointer-events: none;
-    height: 0;
-  }
-  
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af; /* Tailwind gray-400 */
+  pointer-events: none;
+  height: 0;
+}

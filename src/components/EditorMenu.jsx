@@ -1,6 +1,6 @@
 // EditorMenu.jsx
 import React, { useEffect, useState, useRef } from "react";
-import { Bold, Italic, Heading1, List, Image as ImageIcon } from "lucide-react";
+import { Bold, Italic, Heading1, Heading2, Heading3, Heading4, List, Image as ImageIcon } from "lucide-react";
 
 const EditorMenu = ({ editor }) => {
   const [, setTick] = useState(0);
@@ -53,6 +53,11 @@ const EditorMenu = ({ editor }) => {
     reader.readAsDataURL(file);
   };
 
+  const handleColorChange = (e) => {
+    const color = e.target.value;
+    editor.chain().focus().setColor(color).run();
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 p-2 bg-gray-50 rounded-t-md">
       {/* Text styling buttons */}
@@ -78,6 +83,27 @@ const EditorMenu = ({ editor }) => {
       </button>
 
       <button
+        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 2 }).run(); }}
+        className={`px-2 py-1 rounded ${editor.isActive("heading", { level: 2 }) ? "bg-gray-200 text-blue-600" : "hover:bg-gray-100"}`}
+      >
+        <Heading2 size={16} />
+      </button>
+
+      <button
+        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 3 }).run(); }}
+        className={`px-2 py-1 rounded ${editor.isActive("heading", { level: 3 }) ? "bg-gray-200 text-blue-600" : "hover:bg-gray-100"}`}
+      >
+        <Heading3 size={16} />
+      </button>
+
+      <button
+        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleHeading({ level: 4 }).run(); }}
+        className={`px-2 py-1 rounded ${editor.isActive("heading", { level: 4 }) ? "bg-gray-200 text-blue-600" : "hover:bg-gray-100"}`}
+      >
+        <Heading4 size={16} />
+      </button>
+
+      <button
         onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleBulletList().run(); }}
         className={`px-2 py-1 rounded ${editor.isActive("bulletList") ? "bg-gray-200 text-blue-600" : "hover:bg-gray-100"}`}
       >
@@ -100,6 +126,23 @@ const EditorMenu = ({ editor }) => {
         ))}
       </select>
 
+      {/* 🎨 Font Color Selector */}
+      <input
+        type="color"
+        onChange={handleColorChange}
+        className="w-8 h-8 border rounded cursor-pointer"
+        title="Choose text color"
+      />
+
+      {/* 🔄 Reset color */}
+      <button
+        onClick={() => editor.chain().focus().unsetColor().run()}
+        className="px-2 py-1 border rounded text-sm text-gray-600"
+      >
+        Reset
+      </button>
+
+
       {/* 🖼️ Image upload */}
       <button
         onMouseDown={(e) => {
@@ -116,7 +159,7 @@ const EditorMenu = ({ editor }) => {
       <button
         onMouseDown={(e) => {
           e.preventDefault();
-         handleImageUpload();
+          handleImageUpload();
         }}
         className="px-2 py-1 rounded hover:bg-gray-100"
         title="Insert image by URL"

@@ -6,6 +6,7 @@ const pagesApi = {
   create: (data) => axiosClient.post("/pages", data),
   update: (id, data) => axiosClient.put(`/pages/${id}`, data),
   delete: (id) => axiosClient.delete(`/pages/${id}`),
+  hide: (id) => axiosClient.patch(`/pages/${id}/visibility`),
 };
 
 export default pagesApi;

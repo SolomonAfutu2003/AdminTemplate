@@ -13,6 +13,7 @@ const blogApi = {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   delete: (id) => axiosClient.patch(`/blogs/${id}/hide`),
+  hide: (id) => axiosClient.patch(`/blogs/${id}/visibility`)
 };
 
 export default blogApi;

@@ -45,6 +45,31 @@ const Product = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // 🔹 Toggle blog visibility (for Home page only)
+  const handleToggleVisibility = async (id) => {
+    try {
+      setLoading(true);
+      const product = products.find(b => b.id === id);
+      const newVisibility = !product.isVisible;
+      
+      // Call the hide/show API endpoint
+      await productApi.hide(id);
+      
+      // Update local state to reflect the change
+      setProducts(prev => prev.map(b => 
+        b.id === id ? { ...b, isVisible: newVisibility } : b
+      ));
+      
+      alert(`✅ Product ${newVisibility ? 'shown on Home page' : 'hidden from Home page'}!`);
+      setShowMenu(null); // Close the menu after action
+    } catch (err) {
+      console.error("Error toggling visibility:", err.response?.data || err.message);
+      alert("❌ Failed to update visibility.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // 🔹 Delete a blog post
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog post?")) return;
@@ -78,8 +103,13 @@ const Product = () => {
   return (
     <div className="space-y-5">
       <header>
-        <h3 className="text-gray-400">Components</h3>
-        <h2 className="text-3xl text-gray-600">Blog Posts</h2>
+        <h2 className="text-3xl text-gray-600">Products</h2>
+         {/* Admin info - show ALL blogs */}
+         <div className="text-sm text-gray-500 mt-2">
+          Total Blogs: {products.length} | 
+          <span className="text-green-600"> Visible on Home: {products.filter(blog => blog.isVisible).length}</span> | 
+          <span className="text-red-600"> Hidden from Home: {products.filter(blog => !blog.isVisible).length}</span>
+        </div>
       </header>
 
       <main className="space-y-5">
@@ -87,17 +117,21 @@ const Product = () => {
         {error && <p className="text-red-500">{error}</p>}
 
         {/* ✅ Backend blogs */}
-        <section className="grid grid-cols-4 gap-4">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {!loading &&
             products.map((product) => (
               <div key={product.id} className="space-y-3 ">
+                {!product.isVisible && (
+                <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold z-10">
+                  HIDDEN
+                </div>
+              )}
+
                <BlogCards
                     title={product.name}
                     text={product.description}
                     blogImage={
-                      product.imageBase64
-                        ? `data:image/jpeg;base64,${product.imageBase64}`
-                        : ""
+                      product.imageUrl || ""
                     }
                     isHtml={true}
                     showMenu={true}
@@ -105,11 +139,16 @@ const Product = () => {
                   />
                 <div className="relative" >
                   {showMenu === product.id && (
-                  <div ref={menuRef} className="w-[40%] absolute -bottom-14 right-0 p-3 bg-white rounded-lg shadow-xl">
+                  <div ref={menuRef} className="w-[40%] absolute z-10 -bottom-14 right-0 p-3 bg-white rounded-lg shadow-xl">
                     <Btn
                       text="Edit"
                       onClick={() => handleEdit(product.id)}
                       style={" text-blue-400 hover:text-blue-600 px-3 py-1 rounded-lg font-bold"}
+                    />
+                    <Btn
+                      text={product.isVisible ? "Hide" : "Show"}
+                      onClick={() => handleToggleVisibility(product.id)}
+                      style={`${product.isVisible ? "text-yellow-400 hover:text-yellow-600" : "text-green-400 hover:text-green-600"} px-3 py-1 rounded-lg font-bold w-full text-left`}
                     />
                     <Btn
                       text="Delete"

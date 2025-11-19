@@ -10,7 +10,7 @@ const ProductEditor = () => {
     const [form, setForm] = useState({
         name: "",
         description: "",
-        image: "", // preview
+        imageUrl: "", // preview
         imageFile: null, // file for upload
     });
 
@@ -29,12 +29,7 @@ const ProductEditor = () => {
                 setForm({
                     name: data.name || "",
                     description: data.description || "",
-                    image:
-                        data.imageBase64 && data.imageBase64.startsWith("data:")
-                            ? data.imageBase64
-                            : data.imageBase64
-                                ? `data:image/jpeg;base64,${data.imageBase64}`
-                                : "https://via.placeholder.com/400x200?text=No+Image",
+                    image: data.imageUrl || "https://via.placeholder.com/400x200?text=No+Image",
                     imageFile: null,
                 });
             } catch (err) {
@@ -84,7 +79,7 @@ const ProductEditor = () => {
             }
 
             console.log("Saved Product:", res.data);
-            setTimeout(() => navigate("/blog_dashboard"), 1500);
+            setTimeout(() => navigate("/products_page"), 1500);
         } catch (err) {
             console.error("Error saving product:", err.response?.data || err.message);
             setMessage("❌ Failed to save product.");
@@ -110,7 +105,7 @@ const ProductEditor = () => {
             </div>
 
             {/* Form */}
-            <section className="grid grid-cols-2 gap-8">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Left Side */}
                 <div className="flex flex-col gap-8">
                     {/* Product Name */}
@@ -151,7 +146,6 @@ const ProductEditor = () => {
                             <p className="text-sm text-gray-500">Drag & drop or click</p>
                             <input
                                 type="file"
-                                accept="image/*"
                                 onChange={handleImageUpload}
                                 className="hidden"
                             />
