@@ -1,47 +1,68 @@
-// api/proxy/[...path].js
 export default async function handler(req, res) {
   // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+  );
 
-  // Handle OPTIONS/preflight
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     res.status(200).end();
     return;
   }
 
+  // Parse body manually (IMPORTANT for Vercel)
+  let body = null;
+  if (req.method !== "GET") {
+    body = await new Promise((resolve) => {
+      let data = "";
+      req.on("data", (chunk) => (data += chunk));
+      req.on("end", () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch {
+          resolve({});
+        }
+      });
+    });
+  }
+
   const { path = [] } = req.query;
-  const url = `http://195.201.122.224:1401/api/${path.join('/')}`;
-  
+  const url = `http://195.201.122.224:1401/api/${path.join("/")}`;
+
   console.log(`🔄 Proxying ${req.method} to: ${url}`);
 
   try {
     const options = {
       method: req.method,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
+      body: req.method === "GET" ? undefined : JSON.stringify(body),
     };
 
-    // Copy authorization header
     if (req.headers.authorization) {
       options.headers.Authorization = req.headers.authorization;
     }
 
-    // Add body for non-GET requests
-    if (req.method !== 'GET' && req.body) {
-      options.body = JSON.stringify(req.body);
+    const response = await fetch(url, options);
+    const text = await response.text();
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
     }
 
-    const response = await fetch(url, options);
-    const data = await response.json();
-
-    console.log(`✅ Proxy success: ${response.status}`);
     res.status(response.status).json(data);
   } catch (error) {
-    console.error('❌ Proxy failed:', error);
-    res.status(500).json({ error: 'Proxy request failed' });
+    console.error("❌ Proxy failed:", error);
+    res.status(500).json({ error: "Proxy request failed" });
   }
 }
