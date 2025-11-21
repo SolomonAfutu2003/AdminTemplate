@@ -1,46 +1,52 @@
-import axios from "axios";
+// src/api/axiosClient.js
+import axios from 'axios';
 
 const getBaseURL = () => {
-  // Use proxy in production, direct connection in development
-  if (import.meta.env.PROD) {
-    console.log("Using proxy in production");
-    return "/api/proxy";
+  // Multiple ways to detect production
+  const isProduction = 
+    import.meta.env.PROD || 
+    window.location.hostname.includes('vercel.app') ||
+    window.location.hostname.includes('.now.sh') ||
+    window.location.protocol === 'https:'; // If HTTPS, we're in production
+
+  console.log('🔍 Environment check:', {
+    hostname: window.location.hostname,
+    protocol: window.location.protocol,
+    envPROD: import.meta.env.PROD,
+    isVercel: window.location.hostname.includes('vercel.app'),
+    isHTTPS: window.location.protocol === 'https:',
+    finalDecision: isProduction ? 'PRODUCTION' : 'DEVELOPMENT'
+  });
+
+  // FORCE PROXY if we're on HTTPS (production)
+  if (window.location.protocol === 'https:') {
+    console.log('🔒 HTTPS detected - forcing proxy usage');
+    return '/api/proxy';
   }
-  console.log("Using direct API in development");
-  return "http://195.201.122.224:1401/api";
+
+  return isProduction ? '/api/proxy' : 'http://195.201.122.224:1401/api';
 };
 
 const axiosClient = axios.create({
   baseURL: getBaseURL(),
   timeout: 15000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 // Request interceptor
 axiosClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    console.log('🚀 API Request to:', config.baseURL + config.url);
     return config;
   },
   (error) => Promise.reject(error)
-);
-
-// Response interceptor
-axiosClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
 );
 
 export default axiosClient;
