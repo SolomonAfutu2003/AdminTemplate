@@ -1,71 +1,47 @@
 // api/proxy/[...path].js
 export default async function handler(req, res) {
-  const path = req.query.path || [];
-  const targetUrl = `http://195.201.122.224:1401/api/${path.join('/')}`;
-
-  // Log the incoming request
-  console.log('🔁 Proxy request:', {
-    method: req.method,
-    targetUrl: targetUrl,
-    path: path.join('/')
-  });
-
-  // Set CORS headers
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
-  // Handle preflight request
+  // Handle OPTIONS/preflight
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
-  try {
-    // Parse the request body if it exists
-    let body;
-    if (req.body && Object.keys(req.body).length > 0) {
-      body = JSON.stringify(req.body);
-    }
+  const { path = [] } = req.query;
+  const url = `http://195.201.122.224:1401/api/${path.join('/')}`;
+  
+  console.log(`🔄 Proxying ${req.method} to: ${url}`);
 
-    const response = await fetch(targetUrl, {
+  try {
+    const options = {
       method: req.method,
       headers: {
         'Content-Type': 'application/json',
-        ...(req.headers.authorization && { Authorization: req.headers.authorization }),
       },
-      body: body,
-    });
+    };
 
-    // Get the response data
-    const text = await response.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : {};
-    } catch {
-      data = text;
+    // Copy authorization header
+    if (req.headers.authorization) {
+      options.headers.Authorization = req.headers.authorization;
     }
 
-    console.log('✅ Proxy response:', {
-      status: response.status,
-      statusText: response.statusText
-    });
+    // Add body for non-GET requests
+    if (req.method !== 'GET' && req.body) {
+      options.body = JSON.stringify(req.body);
+    }
 
-    // Forward the status and data
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    console.log(`✅ Proxy success: ${response.status}`);
     res.status(response.status).json(data);
   } catch (error) {
-    console.error('❌ Proxy error:', error);
-    res.status(500).json({ 
-      error: 'Internal server error',
-      message: error.message 
-    });
+    console.error('❌ Proxy failed:', error);
+    res.status(500).json({ error: 'Proxy request failed' });
   }
 }
-
-// Important: Export for Vercel serverless functions
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '1mb',
-    },
-  },
-};
