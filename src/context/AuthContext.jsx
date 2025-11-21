@@ -1,6 +1,7 @@
 // src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect } from "react";
-import { TOKEN_KEY, USER_KEY } from "../constant";
+import { TOKEN_KEY, USER_KEY } from "../API/authAPI";
+
 
 export const AuthContext = createContext();
 
@@ -22,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // ✅ Login — store token and user info
-  const login = ({user, token}) => {
+  const login = ({ user, token }) => {
     localStorage.setItem(TOKEN_KEY, token);
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     setUser(user);

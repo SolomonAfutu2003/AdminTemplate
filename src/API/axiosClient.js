@@ -1,29 +1,41 @@
-import axios from "axios";
-import { BASE_URL,TOKEN_KEY } from "../constant";
+import axios from 'axios';
+
+const getBaseURL = () => {
+  // Use proxy in production, direct connection in development
+  if (import.meta.env.PROD) {
+    return '/api/proxy';
+  }
+  return 'http://195.201.122.224:1401/api';
+};
 
 const axiosClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: getBaseURL(),
+  timeout: 15000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
-// 🔑 Add token from localStorage automatically
-axiosClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TOKEN_KEY);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Request interceptor
+axiosClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// 🧱 Global error handling
+// Response interceptor
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.warn("Unauthorized - maybe redirect to login");
-      // window.location.href = "/login";
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
