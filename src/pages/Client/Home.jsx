@@ -207,7 +207,7 @@ const Home = () => {
               <article className="grid grid-cols-4 gap-5">
                 {currentBlogs.map((blog) => (
                   <div key={blog._id || blog.id} className="space-y-3 relative">
-                  {blog.isVisible && (<div>
+                    {blog.isVisible && (<div>
                       <BlogCards
                         title={blog.title}
                         text={blog.content}
@@ -223,7 +223,7 @@ const Home = () => {
                           "bg-white px-3 py-1 text-blue-400 shadow-xl rounded-lg font-bold hover:bg-blue-400 hover:text-white"
                         }
                       />
-                   </div>)}
+                    </div>)}
                   </div>
                 ))}
               </article>
@@ -272,23 +272,23 @@ const Home = () => {
               <section className="grid grid-cols-3 gap-5">
                 {products.map((product) => (
                   <div key={product._id || product.id} className="space-y-3">
-                   { product.isVisible && ( 
-                   <div>
-                     <BlogCards
-                        title={product.name}
-                        text={product.description}
-                        blogImage={product.imageUrl || ""}
-                        isHtml={true}
-                        cardStyle={"hover:scale-105 transition"}
-                      />
-                      <LinkBtn
-                        to={`/products_page/${product._id || product.id}`}
-                        text="View more"
-                        className={
-                          "bg-white px-3 py-1 text-blue-400 shadow-xl rounded-lg font-bold hover:bg-blue-400 hover:text-white"
-                        }
-                      />
-                   </div>
+                    {product.isVisible && (
+                      <div>
+                        <BlogCards
+                          title={product.name}
+                          text={product.description}
+                          blogImage={product.imageUrl || ""}
+                          isHtml={true}
+                          cardStyle={"hover:scale-105 transition"}
+                        />
+                        <LinkBtn
+                          to={`/products_page/${product._id || product.id}`}
+                          text="View more"
+                          className={
+                            "bg-white px-3 py-1 text-blue-400 shadow-xl rounded-lg font-bold hover:bg-blue-400 hover:text-white"
+                          }
+                        />
+                      </div>
                     )}
                   </div>
                 ))}
@@ -306,11 +306,15 @@ const Home = () => {
               <section className="grid grid-cols-3 gap-5">
                 {services.map((service) => (
                   <div key={service._id || service.id} className="space-y-3">
-                    <ServiceCard
-                      title={service.title}
-                      content={service.description}
-                      icon={service.icon}
-                    />
+                    {service.isVisible && (
+                      <div>
+                        <ServiceCard
+                          title={service.title}
+                          content={service.description}
+                          icon={service.icon}
+                        />
+                      </div>
+                    )}
                   </div>
                 ))}
               </section>
